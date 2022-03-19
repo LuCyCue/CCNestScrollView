@@ -1,0 +1,16 @@
+PODS:
+  - CCNestScrollView (0.1.0)
+
+DEPENDENCIES:
+  - CCNestScrollView (from `../`)
+
+EXTERNAL SOURCES:
+  CCNestScrollView:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  CCNestScrollView: dfb4a57895204e2163c02de13b75a490c89190e2
+
+PODFILE CHECKSUM: 46a920ec75ff0758ddb7e971336c5740b62aa148
+
+COCOAPODS: 1.11.2

@@ -1,0 +1,6 @@
+framework module CCNestScrollView {
+  umbrella header "CCNestScrollView-umbrella.h"
+
+  export *
+  module * { export * }
+}
