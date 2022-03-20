@@ -12,7 +12,6 @@
 @implementation NSObject (CCNest)
 
 - (void)cc_scrollViewDidScroll:(UIScrollView *)scrollView {
-    NSLog(@"cc_scrollViewDidScroll");
     if (scrollView.role == CCNestScrollRoleFather) {
         if (!scrollView.canScroll) {
             scrollView.contentOffset = CGPointMake(0, scrollView.criticalOffset);
@@ -20,7 +19,7 @@
         } else {
             if (scrollView.contentOffset.y >= scrollView.criticalOffset) {
                 scrollView.contentOffset = CGPointMake(0, scrollView.criticalOffset);
-                if (scrollView.canScroll) {
+                if (scrollView.canScroll && scrollView.childScrollView.contentSize.height > scrollView.childScrollView.bounds.size.height) {
                     scrollView.canScroll = NO;
                     scrollView.childScrollView.canScroll = YES;
                 }

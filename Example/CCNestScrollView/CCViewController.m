@@ -16,6 +16,10 @@
 @property (nonatomic, strong) UIView *headerView;
 //子UIScrollView
 @property (nonatomic, strong) UIScrollView *childScrollView;
+//子UIScrollView2
+@property(nonatomic, strong) UIScrollView *childScrollView2;
+//横向滚动的scrollView
+@property(nonatomic, strong) UIScrollView *horizontalScrollView;
 @end
 
 @implementation CCViewController
@@ -47,26 +51,62 @@
     label.backgroundColor = UIColor.whiteColor;
     [self.headerView addSubview:label];
     
-    self.childScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 200, self.view.bounds.size.width, self.view.bounds.size.height)];
+    UIScrollView *contentView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 200, self.view.bounds.size.width, self.view.bounds.size.height)];
+    contentView.contentSize = CGSizeMake(self.view.bounds.size.width * 2, self.view.bounds.size.height);
+    contentView.pagingEnabled = YES;
+    contentView.showsVerticalScrollIndicator = NO;
+    contentView.showsHorizontalScrollIndicator = NO;
+    contentView.bounces = YES;
+    contentView.delegate = self;
+    self.horizontalScrollView = contentView;
+    [self.fatherscrollView addSubview:contentView];
+    
+    self.childScrollView = [[UIScrollView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height)];
     self.childScrollView.delegate = self;
     self.childScrollView.contentSize = CGSizeMake(0, self.view.bounds.size.height * 1.5);
     self.childScrollView.backgroundColor = UIColor.redColor;
     self.childScrollView.role = CCNestScrollRoleChild;
     self.childScrollView.superSrcollView = self.fatherscrollView;
     self.childScrollView.criticalOffset = 0;
-    [self.fatherscrollView addSubview:self.childScrollView];
+    [contentView addSubview:self.childScrollView];
     self.fatherscrollView.childScrollView = self.childScrollView;
-    
+
     UILabel *contentLabel = [[UILabel alloc] init];
     contentLabel.font = [UIFont systemFontOfSize:50];
     contentLabel.text = @"子滚动内容";
     contentLabel.textAlignment = NSTextAlignmentCenter;
     contentLabel.frame = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height);
     [self.childScrollView addSubview:contentLabel];
+    
+    self.childScrollView2 = [[UIScrollView alloc] initWithFrame:CGRectMake(self.view.bounds.size.width, 0, self.view.bounds.size.width, self.view.bounds.size.height)];
+    self.childScrollView2.delegate = self;
+    self.childScrollView2.contentSize = CGSizeMake(0, self.view.bounds.size.height * 1.5);
+    self.childScrollView2.backgroundColor = UIColor.blueColor;
+    self.childScrollView2.role = CCNestScrollRoleChild;
+    self.childScrollView2.superSrcollView = self.fatherscrollView;
+    self.childScrollView2.criticalOffset = 0;
+    [contentView addSubview:self.childScrollView2];
+
+    UILabel *contentLabel2 = [[UILabel alloc] init];
+    contentLabel2.font = [UIFont systemFontOfSize:50];
+    contentLabel2.text = @"子滚动内容2";
+    contentLabel2.textAlignment = NSTextAlignmentCenter;
+    contentLabel2.frame = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.height);
+    [self.childScrollView2 addSubview:contentLabel2];
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView {
-    NSLog(@"内部hook了该方法，这边处理必要的逻辑互不干扰");
+    NSLog(@"内部虽然hook了该方法，这边仍然可以处理其它逻辑，互不干扰");
+}
+
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView {
+    if (self.horizontalScrollView == scrollView) {
+        if (scrollView.contentOffset.x >= self.view.bounds.size.width) {
+            self.fatherscrollView.childScrollView = self.childScrollView2;
+        } else {
+            self.fatherscrollView.childScrollView = self.childScrollView;
+        }
+    }
 }
 
 @end
