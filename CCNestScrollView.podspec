@@ -21,7 +21,7 @@ Pod::Spec.new do |s|
 提供 UIScrollView 互相嵌套时的解决方案
                        DESC
 
-  s.homepage         = 'https://github.com/LuCyCue/CCNestScrollView.git'
+  s.homepage         = 'https://github.com/LuCyCue/CCNestScrollView'
   # s.screenshots     = 'www.example.com/screenshots_1', 'www.example.com/screenshots_2'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
   s.author           = { 'lucc' => 'lccjust123@163.com' }
